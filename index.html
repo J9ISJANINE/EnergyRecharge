@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EnergyRecharge</title>
   <link rel="manifest" href="manifest.json" />
+
   <!-- 像素字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap " rel="stylesheet">
 
@@ -20,6 +21,31 @@
       white-space: nowrap;
       font-size: 14px;
       line-height: 1.6;
+    }
+
+    /* 主题切换样式 */
+    body.win95 {
+      background: #333;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    body.hacker {
+      background: black;
+      color: #00FF00;
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    body.crt {
+      background: black;
+      color: #00FF00;
+      font-family: 'Press Start 2P', monospace;
+      animation: crtScanline 1s linear infinite;
+    }
+
+    @keyframes crtScanline {
+      0% { background-position: 0px 0px; }
+      100% { background-position: 0px -100%; }
     }
 
     /* 横向容器 */
@@ -125,6 +151,29 @@
       font-size: 10px;
       margin: 5px;
     }
+
+    /* 主题切换按钮 */
+    .theme-switcher {
+      margin-bottom: 20px;
+    }
+
+    .theme-switcher button {
+      background: #2d2d2d;
+      border: 2px solid #7CFC00;
+      padding: 10px 20px;
+      font-size: 12px;
+      color: #7CFC00;
+      cursor: pointer;
+      transition: all 0.1s;
+      box-shadow: 4px 4px 0 #000;
+      margin: 5px;
+    }
+
+    .theme-switcher button:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 #000;
+      background: #3d3d3d;
+    }
   </style>
 </head>
 
@@ -132,6 +181,14 @@
 
   <!-- 主体窗口 -->
   <div class="window">
+
+    <!-- 主题切换按钮 -->
+    <div class="theme-switcher">
+      <button onclick="setTheme('default')">默认</button>
+      <button onclick="setTheme('win95')">Windows 95</button>
+      <button onclick="setTheme('hacker')">黑客命令行</button>
+      <button onclick="setTheme('crt')">CRT 屏幕</button>
+    </div>
 
     <!-- 横向滚动的图标 -->
     <div style="position: relative; height: 100px;">
@@ -187,7 +244,7 @@
       const lines = [
         { en: "Today's Motto: Small steps still move mountains.", zh: "今日能量语句：微小步伐也能翻山越海。" },
         { en: "Your energy is your most valuable resource.", zh: "今日能量语句：你的能量是你最宝贵的资源。" },
-        { en: "You don't need to be perfect, just present.", zh: "今日能量语句：你不必完美，只需在场。" },
+        { en: "You don't need to be perfect, just present.", zh: "今日能量语句：你不必完美，只需在场。" },  
         { en: "Choice makes you responsible, not powerful.", zh: "今日能量语句：选择让你变得有责任，而不是强大。" },
         { en: "What you do now echoes in eternity.", zh: "今日能量语句：你现在的行为将在永恒中回响。" }
       ];
@@ -248,7 +305,7 @@
     function saveToCompleted(taskText) {
       const completed = JSON.parse(localStorage.getItem("completed-tasks") || "[]");
       completed.push(taskText);
-      localStorage.setItem("completed-tasks", JSON.stringify(completed));  
+      localStorage.setItem("completed-tasks", JSON.stringify(completed));
       renderCompleted();
     }
 
@@ -261,8 +318,23 @@
     // 初始化页面
     window.onload = () => {
       renderCompleted();
-      updateTryCounter();
+      updateTryCounter();  
     };
+
+    // 主题切换逻辑
+    function setTheme(theme) {
+      // 移除所有主题类
+      document.body.classList.remove('win95', 'hacker', 'crt');
+
+      // 添加新主题类
+      if (theme === 'win95') {
+        document.body.classList.add('win95');
+      } else if (theme === 'hacker') {
+        document.body.classList.add('hacker');
+      } else if (theme === 'crt') {
+        document.body.classList.add('crt');
+      }
+    }
   </script>
 
 </body>
