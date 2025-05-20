@@ -1,0 +1,20 @@
+{
+  "name": "EnergyRecharge",  
+  "short_name": "充电站",  
+  "start_url": ".",
+  "display": "standalone",  
+  "background_color": "#fffaf0",
+  "description": "开始恢复能量吧~",
+  "icons": [
+    {
+      "src": "icon-192x192.png",  
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
