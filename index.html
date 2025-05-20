@@ -3,137 +3,213 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>能量充电站</title>
+  <title>EnergyRecharge</title>
   <link rel="manifest" href="manifest.json" />
-  <!-- 引入复古游戏字体 -->
+
+  <!-- 像素字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap " rel="stylesheet">
+
   <style>
     /* 全局样式 */
     body {
-      background-color: #0A0908; /* 深灰色背景 */
-      font-family: 'Press Start 2P', sans-serif; /* 复古游戏字体 */
-      text-align: center;
-      padding-top: 80px;
-      color: #fff; /* 白色文字 */
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: #7CFC00;
+      font-family: 'Press Start 2P', monospace;
+      overflow: hidden;
+    }
+
+    /* 启动画面 */
+    #boot-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: lime;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-size: 14px;
+      z-index: 9999;
+    }
+
+    /* 主体容器（模拟 Win98 分辨率） */
+    .window {
+      width: 640px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid #7CFC00;
+      background: #000;
+      box-shadow: 0 0 10px rgba(124, 252, 0, 0.3);
+      font-size: 12px;
     }
 
     h1 {
-      font-size: 24px;
-      color: #ff69b4; /* 粉色标题 */
-      margin-bottom: 30px;
+      font-size: 16px;
+      color: #FFD700;
+      text-shadow: 1px 1px black;
+      margin-bottom: 20px;
     }
 
     button {
-      background-color: #ffd700;
-      border: none;
-      padding: 15px 30px;
-      font-size: 18px;
-      border-radius: 20px;
-      box-shadow: 0 4px #ffb6c1;
+      background: #2d2d2d;
+      border: 3px solid #7CFC00;
+      padding: 10px 20px;
+      font-size: 12px;
+      color: #7CFC00;
       cursor: pointer;
-      transition: all 0.2s ease-in-out;
-      margin-top: 20px;
+      transition: all 0.1s;
+      box-shadow: 4px 4px 0 #000;
     }
 
     button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px #ffaeb9;
+      transform: translate(2px, 2px);
+      background: #3d3d3d;
     }
 
     #output {
       margin-top: 30px;
-      font-size: 24px;
-      min-height: 60px;
-      color: #fff; /* 白色输出内容 */
-    }
-
-    .floating-dog {
-      width: 100px;
-      animation: floatDog 3s ease-in-out infinite;
-      margin: 0 auto 20px;
-    }
-
-    @keyframes floatDog {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    /* 底部版权信息 */
-    .footer {
-      margin-top: 60px;
+      padding: 15px;
+      width: 80%;
+      border: 3px dashed #7CFC00;
       font-size: 12px;
-      color: #ccc;
+      line-height: 1.8;
+      background: rgba(0, 0, 0, 0.6);
     }
 
-    /* 响应式布局 */
-    @media (max-width: 600px) {
-      .floating-dog {
-        width: 80px;
-      }
+    /* Kitty 动画 */
+    .floating-kitty {
+      width: 64px;
+      image-rendering: pixelated;
+      animation: pixelBounce 0.8s steps(4) infinite;
+    }
+
+    @keyframes pixelBounce {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* 名字徽章动画 */
+    .janine-icon {
+      width: 64px;
+      image-rendering: pixelated;
+      animation: pixelBounce 1.2s ease-in-out infinite;
+    }
+
+    .footer {
+      font-size: 8px;
+      color: #555;
+      margin-top: 40px;
+    }
+
+    /* CRT扫描线背景 */
+    body {
+      background-image:
+        linear-gradient(rgba(124, 252, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124, 252, 0, 0.05) 1px, transparent 1px);
+      background-size: 4px 4px;
     }
   </style>
 </head>
+
 <body>
 
-  <!-- 像素风格小狗 -->
-  <img src="icon-192x192.png" alt="Pixel Dog" class="floating-dog" />
+  <!-- 启动画面 -->
+  <div id="boot-screen">
+    $ SYSTEM BOOTING<br><br>
+    $ LOADING MODULES...<br>
+    [■■■■■] 98%<br><br>
+    PRESS ANY KEY TO CONTINUE
+  </div>
 
-  <!-- 主标题 -->
-  <h1>🧃 Click to get a random energy recharge task! (Only one per click)</h1>
+  <!-- 主体窗口 -->
+  <div class="window">
 
-  <!-- 随机任务按钮 -->
-  <button onclick="generateTask()">🔁 Get One!</button>
+    <!-- 显示名字徽章 -->
+    <img src="janine-icon.png" alt="J9ISJANINE" class="janine-icon" />
 
-  <!-- 输出任务区域 -->
-  <div id="output">💫</div>
+    <!-- DOS 风格欢迎语 -->
+    <div style="margin-bottom: 10px; font-size: 12px;">$ J9ISJANINE ENERGY STATION LOADED</div>
 
-  <!-- 底部版权信息 -->
-  <div class="footer">© EnergyRecharge · Powered by Pixel Dog 💖</div>
+    <!-- Kitty 图标 -->
+    <img src="icon-192x192.png" alt="Kitty Recharger" class="floating-kitty" />
+
+    <!-- 标题 -->
+    <h1>🧃 点我获取一条恢复能量的随机玩法！</h1>
+
+    <!-- 按钮 -->
+    <button onclick="generateTask()">🔁 来一条！</button>
+
+    <!-- 输出区域 -->
+    <div id="output">█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█</div>
+
+    <!-- 底部版权信息 -->
+    <div class="footer">© J9ISJANINE • ENERGY RECHARGE v1.0</div>
+
+  </div>
 
   <script>
     const tasks = [
-      "Pick up a book you haven't read and start from the middle page 📖",  
-      "Find a poem in an unfamiliar language and read it without translation 🎧",  
-      "Open a map and pick a place to see where it is 🗺️",  
-      "Look up a job title you've never heard of 💼",
-      "Draw a rabbit and give it a name and hometown 🐇",
-      "Close your eyes and stand still for 5 minutes, feel the ground and gravity 🌍",
-      "Draw a line drawing, like you're dreaming 🌀",
-      "Open Douban Movie Rankings and watch the 34th movie 🎬",
-      "Grab a handful of rice and sprinkle it near the area with the most bird sounds while saying 🎵Birds, come eat!🎵",  
-      "Learn a new song ✌",
-      "Record three recent happy things 😽",
-      "List five reasons why you're awesome (even if it's just about pooping quickly!🌚)",
-      "Go to a place you've never been before and take a picture 🍦",
-      "Declutter 4 items you haven't used in 3 months ☕",
-      "Buy a small plant to keep at home or dig in a nearby green area~🌱",
-      "Try writing a poem💪",
-      "Do 2 sit-ups, that's it! Just 2! 🤪",
-      "Pretend Mian is an alien spy and write a report 👽",
-      "Bite your teeth on the edge of paper, decompress 🧻",
-      "Record yourself singing a spell, regardless of pitch 🎶",
-      "Observe the view outside for 30 seconds and write a director's commentary 🎬",
-      "Pretend you're a typhoon spirit 🌪️",
-      "Don't look at your phone for 1 hour🙌",
-      "Tell your cup \"I allow you to flow freely\" three times 💧",
-      "Choose a color and draw for 5 minutes using only that color 🎨",
-      "Write a letter you'll never send ✉️",
-      "Imitate the sound of crying when you were a child 😭",
-      "Put your face in your clothes and breathe in three times 🧣",
-      "List five unheard-of job titles (like sleeping judge) 🛌",
-      "Write with your left hand ✍️",
-      "Send a message to an old friend and ask them to recommend a movie😄",
-      "Complete a 3KM run🏃‍♀️",
-      "Draw an energy ball and meditate with it ✨",
-      "Write your name using both hands (don't worry about how it looks, focus on the action)👃✍️",
-      "Read a common phrase in different tones, like \"Today's weather is great!\" (serious, dramatic, coquettish…)🎭"
+      "随便翻一本没看过的书，从中间读一页 📖",
+      "找一段陌生语种的诗歌朗读，不查意思 🎧",
+      "打开地图点个地方，看看那是哪儿 🗺️",
+      "查一个你从未听说过的职业 💼",
+      "画个兔子，给它编个名字和出生地 🐇",
+      "闭眼原地站立5分钟，感受地面和重力 🌍",
+      "画一张线条图，像在做梦 🌀",
+      "打开豆瓣电影排名去看第34名的那部电影🎬",
+      "抓一把米下楼撒在小鸟声音最多的区域并说 🎵小鸟小鸟快来吃！",
+      "学习一首新歌✌",
+      "记录3件近期开心的事😽",
+      "列出5个 我很优秀 的理由（拉屎很快当然也算啊！🌚）",
+      "去周边一个没去过的地方拍张照🍢",
+      "断舍离4件3个月没用过的东西☕",
+      "去买一盆小植物放家里🌱",
+      "尝试写一首诗💪",
+      "做2个仰卧起坐，没错儿就2个！",
+      "假装绵总是外星来的间谍，写一段报告 👽",
+      "牙齿轻咬纸边角，解压 🧻",
+      "录一段你唱的咒语🎵",
+      "观察窗外30秒，写个导演旁白 🎬",
+      "假装你是台风精灵 🌪️",
+      "不看手机1小时🙌",
+      "对着水杯说“我允许你自由流动”三次 💧",
+      "选一种颜色，只用那种颜色画5分钟 🎨",
+      "写一封永远不寄出的信 ✉️",
+      "模仿你小时候哭的声音 😭",
+      "把脸埋进衣服里呼吸三下 🧣",
+      "列出5个从未听过的职业名（如睡觉审判官） 🛌",
+      "用左手写字 ✍️",
+      "给一个老朋友发个消息，让TA给你推荐一个电影😄",
+      "完成一次3KM慢跑🏃‍♀️",
+      "画个能量球，握在手里冥想 ✨",
+      "用左右写自己的名字（别担心写得难看，重点是动作）👃✍️",
+      "用不同的语气读一句普通的话，比如“今天天气真好！”（严肃、戏剧、可爱…）🎭"
     ];
 
     function generateTask() {
       const randomIndex = Math.floor(Math.random() * tasks.length);
       const selectedTask = tasks[randomIndex];
-      document.getElementById("output").innerHTML = `✨ ${selectedTask}`;
+      document.getElementById("output").innerHTML =  
+        `✨ ${selectedTask} ✨<br>▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄`;
     }
+
+    // 关闭启动画面
+    document.addEventListener("click", () => {
+      document.getElementById("boot-screen").style.display = "none";
+    });
+
+    // 按 Enter 键生成任务
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        generateTask();
+      }
+    });
   </script>
 
 </body>
