@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EnergyRecharge</title>
   <link rel="manifest" href="manifest.json" />
-
   <!-- 像素字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap " rel="stylesheet">
 
@@ -17,35 +16,21 @@
       background: black;
       color: #7CFC00;
       font-family: 'Press Start 2P', monospace;
-      overflow: hidden;
-    }
-
-    /* 启动画面 */
-    #boot-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-      color: lime;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      overflow-x: auto;
+      white-space: nowrap;
       font-size: 14px;
-      z-index: 9999;
+      line-height: 1.6;
     }
 
-    /* 主体容器（模拟 Win98 分辨率） */
+    /* 横向容器 */
     .window {
-      width: 640px;
-      margin: 20px auto;
-      padding: 20px;
-      border: 2px solid #7CFC00;
-      background: #000;
-      box-shadow: 0 0 10px rgba(124, 252, 0, 0.3);
-      font-size: 12px;
+      display: inline-block;
+      width: 1200px;
+      min-height: 100vh;
+      padding: 40px 20px;
+      border-left: 2px solid #7CFC00;
+      border-right: 2px solid #7CFC00;
+      background-color: #000;
     }
 
     h1 {
@@ -56,7 +41,7 @@
     }
 
     button {
-      background: #2d2d2d;
+      background: linear-gradient(45deg, #2d2d2d, #3d3d3d);
       border: 3px solid #7CFC00;
       padding: 10px 20px;
       font-size: 12px;
@@ -64,41 +49,29 @@
       cursor: pointer;
       transition: all 0.1s;
       box-shadow: 4px 4px 0 #000;
+      margin: 10px 5px;
     }
 
     button:hover {
       transform: translate(2px, 2px);
-      background: #3d3d3d;
+      box-shadow: 2px 2px 0 #000;
+      background: linear-gradient(45deg, #3d3d3d, #4d4d4d);
     }
 
-    #output {
-      margin-top: 30px;
+    #output, #today-line {
+      margin-top: 20px;
       padding: 15px;
       width: 80%;
       border: 3px dashed #7CFC00;
-      font-size: 12px;
-      line-height: 1.8;
       background: rgba(0, 0, 0, 0.6);
     }
 
-    /* Kitty 动画 */
-    .floating-kitty {
-      width: 64px;
-      image-rendering: pixelated;
-      animation: pixelBounce 0.8s steps(4) infinite;
-    }
-
-    @keyframes pixelBounce {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-      100% { transform: translateY(0); }
-    }
-
-    /* 名字徽章动画 */
-    .janine-icon {
-      width: 64px;
-      image-rendering: pixelated;
-      animation: pixelBounce 1.2s ease-in-out infinite;
+    #completed-list {
+      margin-top: 20px;
+      padding: 15px;
+      width: 80%;
+      border: 2px dotted #00FFFF;
+      background: rgba(0, 0, 0, 0.6);
     }
 
     .footer {
@@ -107,109 +80,189 @@
       margin-top: 40px;
     }
 
-    /* CRT扫描线背景 */
+    /* 横向滚动背景效果 */
     body {
       background-image:
         linear-gradient(rgba(124, 252, 0, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(124, 252, 0, 0.05) 1px, transparent 1px);
       background-size: 4px 4px;
     }
+
+    /* Kitty 横向移动动画 */
+    .janine-icon {
+      width: 128px;
+      image-rendering: pixelated;
+      animation: scrollKitty 8s linear infinite;
+    }
+
+    @keyframes scrollKitty {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(100vw); }
+    }
+
+    /* 响应式设置 */
+    @media (max-width: 640px) {
+      .window {
+        width: 100%;
+        font-size: 12px;
+      }
+
+      .janine-icon {
+        width: 64px;
+      }
+
+      button {
+        font-size: 10px;
+      }
+    }
+
+    /* 标签筛选栏 */
+    .tags {
+      margin-top: 10px;
+    }
+
+    .tag-btn {
+      font-size: 10px;
+      margin: 5px;
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- 启动画面 -->
-  <div id="boot-screen">
-    $ SYSTEM BOOTING<br><br>
-    $ LOADING MODULES...<br>
-    [■■■■■] 98%<br><br>
-    PRESS ANY KEY TO CONTINUE
-  </div>
-
   <!-- 主体窗口 -->
   <div class="window">
 
-    <!-- 显示名字徽章 -->
-    <img src="janine-icon.png" alt="J9ISJANINE" class="janine-icon" />
+    <!-- 横向滚动的图标 -->
+    <div style="position: relative; height: 100px;">
+      <img src="janine-icon.png" alt="J9ISJANINE" class="janine-icon" />
+    </div>
 
-    <!-- DOS 风格欢迎语 -->
-    <div style="margin-bottom: 10px; font-size: 12px;">$ J9ISJANINE ENERGY STATION LOADED</div>
-
-    <!-- Kitty 图标 -->
-    <img src="icon-192x192.png" alt="Kitty Recharger" class="floating-kitty" />
+    <!-- DOS 欢迎语 -->
+    <div style="margin-bottom: 10px;">$ J9ISJANINE ENERGY STATION LOADED</div>
 
     <!-- 标题 -->
-    <h1>🧃 点我获取一条恢复能量的随机玩法！</h1>
+    <h1>🧃 点我获取一条恢复能量的小任务（只能随机1条喔）</h1>
 
-    <!-- 按钮 -->
+    <!-- 来一条按钮 -->
     <button onclick="generateTask()">🔁 来一条！</button>
+    <button onclick="generateShortTasks()">⏰ 我只有10分钟</button>
 
     <!-- 输出区域 -->
     <div id="output">█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█</div>
 
-    <!-- 底部版权信息 -->
-    <div class="footer">© J9ISJANINE • ENERGY RECHARGE v1.0</div>
+    <!-- 今日能量语句 -->
+    <h1>✨ 今日能量语句 ✨</h1>
+    <div id="today-line"></div>
 
+    <!-- 已完成任务 -->
+    <h1>✅ 已完成的任务</h1>
+    <div id="completed-list">暂无记录</div>
+
+    <!-- 底部版权信息 -->
+    <div class="footer">© EnergyRecharge by J9ISJANINE · v1.0</div>
   </div>
 
   <script>
     const tasks = [
-      "随便翻一本没看过的书，从中间读一页 📖",
-      "找一段陌生语种的诗歌朗读，不查意思 🎧",
-      "打开地图点个地方，看看那是哪儿 🗺️",
-      "查一个你从未听说过的职业 💼",
-      "画个兔子，给它编个名字和出生地 🐇",
-      "闭眼原地站立5分钟，感受地面和重力 🌍",
-      "画一张线条图，像在做梦 🌀",
-      "打开豆瓣电影排名去看第34名的那部电影🎬",
-      "抓一把米下楼撒在小鸟声音最多的区域并说 🎵小鸟小鸟快来吃！",
-      "学习一首新歌✌",
-      "记录3件近期开心的事😽",
-      "列出5个 我很优秀 的理由（拉屎很快当然也算啊！🌚）",
-      "去周边一个没去过的地方拍张照🍢",
-      "断舍离4件3个月没用过的东西☕",
-      "去买一盆小植物放家里🌱",
-      "尝试写一首诗💪",
-      "做2个仰卧起坐，没错儿就2个！",
-      "假装绵总是外星来的间谍，写一段报告 👽",
-      "牙齿轻咬纸边角，解压 🧻",
-      "录一段你唱的咒语🎵",
-      "观察窗外30秒，写个导演旁白 🎬",
-      "假装你是台风精灵 🌪️",
-      "不看手机1小时🙌",
-      "对着水杯说“我允许你自由流动”三次 💧",
-      "选一种颜色，只用那种颜色画5分钟 🎨",
-      "写一封永远不寄出的信 ✉️",
-      "模仿你小时候哭的声音 😭",
-      "把脸埋进衣服里呼吸三下 🧣",
-      "列出5个从未听过的职业名（如睡觉审判官） 🛌",
-      "用左手写字 ✍️",
-      "给一个老朋友发个消息，让TA给你推荐一个电影😄",
-      "完成一次3KM慢跑🏃‍♀️",
-      "画个能量球，握在手里冥想 ✨",
-      "用左右写自己的名字（别担心写得难看，重点是动作）👃✍️",
-      "用不同的语气读一句普通的话，比如“今天天气真好！”（严肃、戏剧、可爱…）🎭"
+      { text: "随便翻一本没看过的书，从中间读一页 📖", tags: ['阅读', '静心'] },
+      { text: "找一段陌生语种的诗歌朗读，不查意思 🎧", tags: ['语言', '冥想'] },
+      { text: "打开地图点个地方，看看那是哪儿 🗺️", tags: ['探索', '步行'] },
+      { text: "抓一把米下楼撒在小鸟声音最多的区域并说 🎵小鸟小鸟快来吃！", tags: ['户外', '自然'] },
+      { text: "画一张线条图，像在做梦 🌀", tags: ['画画', '放松'] },
+      { text: "列出5个 我很优秀 的理由（拉屎很快当然也算啊！🌚）", tags: ['自信', '幽默'] },
+      { text: "去周边一个没去过的地方拍张照🍢", tags: ['摄影', '探索'] },
+      { text: "断舍离4件3个月没用过的东西☕", tags: ['整理', '轻松'] },
+      { text: "买一盆小植物🌱", tags: ['养植', '治愈'] },
+      { text: "试试写一首诗💪", tags: ['创作', '表达'] },
+      { text: "做2个仰卧起坐，没错儿就2个！🫳", tags: ['运动', '启动'] },
+      { text: "对着水杯说“我允许你自由流动”三次 💧", tags: ['仪式感', '释放'] },
+      { text: "选一种颜色，只用那种颜色画5分钟 🎨", tags: ['艺术', '专注'] },
+      { text: "模仿你小时候哭的声音 😭", tags: ['情绪释放', '搞笑'] },
+      { text: "给一个老朋友发个消息😄", tags: ['社交', '连接'] }
     ];
 
-    function generateTask() {
-      const randomIndex = Math.floor(Math.random() * tasks.length);
-      const selectedTask = tasks[randomIndex];
-      document.getElementById("output").innerHTML =  
-        `✨ ${selectedTask} ✨<br>▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄`;
+    // 今日能量语句（按日期变化）
+    function getTodayLine() {
+      const lines = [
+        { en: "Today's Motto: Small steps still move mountains.", zh: "今日能量语句：微小步伐也能翻山越海。" },
+        { en: "Your energy is your most valuable resource.", zh: "今日能量语句：你的能量是你最宝贵的资源。" },
+        { en: "You don't need to be perfect, just present.", zh: "今日能量语句：你不必完美，只需在场。" },
+        { en: "Choice makes you responsible, not powerful.", zh: "今日能量语句：选择让你变得有责任，而不是强大。" },
+        { en: "What you do now echoes in eternity.", zh: "今日能量语句：你现在的行为将在永恒中回响。" }
+      ];
+      const today = new Date().getDay();
+      return lines[today % lines.length];
     }
 
-    // 关闭启动画面
-    document.addEventListener("click", () => {
-      document.getElementById("boot-screen").style.display = "none";
-    });
+    const todayLine = getTodayLine();
+    document.getElementById("today-line").innerHTML = `${todayLine.zh}<br>${todayLine.en}`;
 
-    // 按 Enter 键生成任务
-    document.addEventListener("keydown", function(event) {
-      if (event.key === "Enter") {
-        generateTask();
+    // 每日任务次数限制逻辑
+    const MAX_TRIES = 3;
+
+    function getTodayKey() {
+      const today = new Date().toISOString().split('T')[0];
+      return `taskCount-${today}`;
+    }
+
+    function getTryCount() {
+      return parseInt(localStorage.getItem(getTodayKey()) || "0");
+    }
+
+    function increaseTryCount() {
+      const key = getTodayKey();
+      localStorage.setItem(key, getTryCount() + 1);
+    }
+
+    function updateTryCounter() {
+      document.querySelector(".try-counter").textContent = `${MAX_TRIES - getTryCount()} 次剩余`;
+    }
+
+    function generateTask(filterTag = null) {
+      if (getTryCount() >= MAX_TRIES) {
+        alert("今天只能抽3次啦～明天再来吧！");
+        return;
       }
-    });
+
+      let validTasks = tasks;
+      if (filterTag) {
+        validTasks = tasks.filter(t => t.tags.includes(filterTag));
+      }
+
+      const randomIndex = Math.floor(Math.random() * validTasks.length);
+      const selectedTask = validTasks[randomIndex].text;
+      document.getElementById("output").innerHTML = `✨ ${selectedTask} ✨<br>▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄`;
+
+      increaseTryCount();
+      updateTryCounter();
+      saveToCompleted(selectedTask);
+    }
+
+    // 生成短任务（带 tag 筛选）
+    function generateShortTasks() {
+      generateTask("10分钟");
+    }
+
+    // 已完成任务记录
+    function saveToCompleted(taskText) {
+      const completed = JSON.parse(localStorage.getItem("completed-tasks") || "[]");
+      completed.push(taskText);
+      localStorage.setItem("completed-tasks", JSON.stringify(completed));  
+      renderCompleted();
+    }
+
+    function renderCompleted() {
+      const completed = JSON.parse(localStorage.getItem("completed-tasks") || "[]");
+      const list = completed.map(task => `✔️ ${task}`).join("<br>");
+      document.getElementById("completed-list").innerHTML = list || "暂无记录";
+    }
+
+    // 初始化页面
+    window.onload = () => {
+      renderCompleted();
+      updateTryCounter();
+    };
   </script>
 
 </body>
